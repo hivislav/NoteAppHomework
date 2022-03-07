@@ -19,6 +19,9 @@ public class EditNoteActivity extends AppCompatActivity {
 
     private Note note;
     private Repo repo = InMemoryRepoImp.getInstance();
+    private EditText editTitle;
+    private EditText editDescription;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,11 +31,16 @@ public class EditNoteActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_edit_note);
 
+        editTitle = findViewById(R.id.set_title);
+        editDescription = findViewById(R.id.set_description);
+        editTitle.setText(note.getTitle());
+        editDescription.setText(note.getDescription());
+
         Button buttonOk = findViewById(R.id.button_ok);
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveNote();
+              saveNote();
             }
         });
     }
@@ -43,8 +51,7 @@ public class EditNoteActivity extends AppCompatActivity {
     {
         int noteId = note.getId();
         Note editNote = note;
-        EditText editTitle = findViewById(R.id.set_title);
-        EditText editDescription = findViewById(R.id.set_description);
+
         editNote.setTitle(editTitle.getText().toString());
         editNote.setDescription(editDescription.getText().toString());
         editNote.setId(noteId);
