@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Note App Homework</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="description_in_note_edit">Ваша заметка</string>
+    <string name="title_in_note_edit">Заголовок заметки</string>
+    <string name="button_ok">Ок</string>
 </resources>
