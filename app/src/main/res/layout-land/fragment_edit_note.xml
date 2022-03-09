@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.EditNoteActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/note_style"
+        android:padding="@dimen/padding_edit_note">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                style="@style/NoteEditTitleLandscape"
+                android:id="@+id/set_title">
+            </EditText>
+
+            <EditText
+                style="@style/NoteEditDescription"
+                android:id="@+id/set_description">
+            </EditText>
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/ButtonOk"
+                android:id="@+id/button_ok">
+            </com.google.android.material.button.MaterialButton>
+
+        </LinearLayout>
+    </FrameLayout>
+
+</androidx.cardview.widget.CardView>

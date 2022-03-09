@@ -5,4 +5,6 @@
     <string name="description_in_note_edit">Ваша заметка</string>
     <string name="title_in_note_edit">Заголовок заметки</string>
     <string name="button_ok">Ок</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
