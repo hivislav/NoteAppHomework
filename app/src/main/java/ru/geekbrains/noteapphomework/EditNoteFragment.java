@@ -1,28 +1,20 @@
 package ru.geekbrains.noteapphomework;
 
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import ru.geekbrains.noteapphomework.data.Controller;
 import ru.geekbrains.noteapphomework.data.InMemoryRepoImp;
 import ru.geekbrains.noteapphomework.data.Note;
 import ru.geekbrains.noteapphomework.data.Repo;
-import ru.geekbrains.noteapphomework.recycler.NotesAdapter;
 
 public class EditNoteFragment extends Fragment {
-
 
     private Note note;
     private int noteId;
@@ -30,7 +22,6 @@ public class EditNoteFragment extends Fragment {
     private EditText editTitle;
     private EditText editDescription;
     public static final String NOTE = "NOTE";
-
 
     public static EditNoteFragment getInstance(Note note){
         // создать фрагмент
@@ -50,13 +41,11 @@ public class EditNoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_edit_note, container, false);
-
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
 
         editTitle = view.findViewById(R.id.set_title);
         editDescription = view.findViewById(R.id.set_description);
@@ -68,14 +57,7 @@ public class EditNoteFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 saveNote();
-
-                if (getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE){
-                    ((Controller) requireActivity()).pressedOkButtonEditNoteLandscape();
-                }
-                else {
-                    ((Controller) requireActivity()).pressedOkButtonEditNote();
-                }
+                ((Controller) requireActivity()).pressedOkButtonEditNote();
             }
         });
     }
@@ -88,7 +70,6 @@ public class EditNoteFragment extends Fragment {
         editNote.setId(noteId);
         repo.update(editNote);
     }
-
 
     private void init(Note note){
         // извлечь аргументы

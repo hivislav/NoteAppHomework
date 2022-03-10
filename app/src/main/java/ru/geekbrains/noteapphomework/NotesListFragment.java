@@ -1,8 +1,5 @@
 package ru.geekbrains.noteapphomework;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +19,6 @@ import ru.geekbrains.noteapphomework.data.InMemoryRepoImp;
 import ru.geekbrains.noteapphomework.data.Note;
 import ru.geekbrains.noteapphomework.data.Repo;
 import ru.geekbrains.noteapphomework.recycler.NotesAdapter;
-import ru.geekbrains.noteapphomework.ui.EditNoteActivity;
-import ru.geekbrains.noteapphomework.ui.NotesListActivity;
-
 
 public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteClickListener {
 
@@ -32,13 +26,11 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
     private Repo repo = InMemoryRepoImp.getInstance();
     private NotesAdapter adapter;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_notes_list, container, false);
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -55,9 +47,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
 
         list.setAdapter(adapter);
         list.setLayoutManager(new LinearLayoutManager(list.getContext()));
-
     }
-
 
     @Override
     public void onNoteClick(Note note) {
@@ -69,5 +59,10 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
             Log.d("happy", note.getDescription());
             ((Controller) requireActivity()).openEditNoteFragment(note);
         }
+    }
+
+    public void refresh() {
+        if(adapter != null)
+            adapter.notifyDataSetChanged();
     }
 }
