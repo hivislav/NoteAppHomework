@@ -35,6 +35,12 @@
         <item name="android:hint">@string/description_in_note_edit</item>
     </style>
 
+    <style name="NoteEditTitleLandscape" parent="NoteEditTitle">
+        <item name="android:layout_weight">1.5</item>
+    </style>
+
+
+
     <style name="ButtonOk">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_width">@dimen/button_ok_width</item>

@@ -10,10 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoteAppHomework">
         <activity
-            android:name=".ui.EditNoteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.NotesListActivity"
+            android:name=".NotesListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
