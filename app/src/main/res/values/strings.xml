@@ -1,10 +1,27 @@
 <resources>
-    <string name="app_name">Note App Homework</string>
+    <string name="app_name">Note App</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="description_in_note_edit">Ваша заметка</string>
     <string name="title_in_note_edit">Заголовок заметки</string>
     <string name="button_ok">Ок</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_menu_settings">Настройки</string>
+    <string name="navigation_menu_feedback">Обратная связь</string>
+    <string name="navigation_menu_leave_feedback">Оставить отзыв</string>
+    <string name="navigation_menu_about">О приложении</string>
+    <string name="notes_list_option_menu_sort">Отсортировать заметки</string>
+    <string name="notes_list_option_menu_search">Найти заметку</string>
+    <string name="notes_list_option_menu_add">Добавить заметку</string>
+    <string name="share_note">Поделиться</string>
+    <string name="add_multimedia_note">Прикрепить файл</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="about_version">Версия от 23.03.2022</string>
+    <string name="about_autor">Автор: Вячеслав</string>
+    <string name="about_remark">*для платформы GeekBrains</string>
+    <string name="navigation_head_username">Username</string>
+    <string name="navigation_head_email">user@google.com</string>
+    <string name="navigation_header">Navigation header</string>
 </resources>
