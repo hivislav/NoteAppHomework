@@ -20,8 +20,9 @@ import com.google.android.material.navigation.NavigationView;
 
 import ru.geekbrains.noteapphomework.data.Controller;
 import ru.geekbrains.noteapphomework.data.Note;
+import ru.geekbrains.noteapphomework.data.QuitDialogListener;
 
-public class NotesListActivity extends AppCompatActivity implements Controller {
+public class NotesListActivity extends AppCompatActivity implements Controller, QuitDialogListener {
 
     private FragmentManager manager;
     public static final String EDIT_NOTE_LANDSCAPE = "EDIT_NOTE_LANDSCAPE";
@@ -154,5 +155,19 @@ public class NotesListActivity extends AppCompatActivity implements Controller {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (manager.getBackStackEntryCount() == 0) // чтобы форма закрытия всплывала только из основного фрагмента
+        new QuitDialogFragment().show(getSupportFragmentManager(), QuitDialogFragment.QUIT_DIALOG_FRAGMENT_TAG);
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void quitDialogYes() {
+        finish();
     }
 }
