@@ -53,15 +53,9 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
 
     @Override
     public void onNoteClick(Note note) {
-        if (getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_LANDSCAPE) {
-            Log.d("happy", note.getDescription());
-            ((Controller) requireActivity()).openEditNoteFragmentLandscape(note);
-        } else {
             Log.d("happy", note.getDescription());
             ((Controller) requireActivity()).openEditNoteFragment(note);
         }
-    }
 
     public void refresh() {
         if(adapter != null)
