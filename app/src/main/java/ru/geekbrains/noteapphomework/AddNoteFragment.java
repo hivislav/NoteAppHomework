@@ -2,7 +2,12 @@ package ru.geekbrains.noteapphomework;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
+
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,9 +25,12 @@ import ru.geekbrains.noteapphomework.data.Repo;
 
 public class AddNoteFragment extends Fragment {
 
+    private static final int PENDING_REQUEST_ID = 416;
     private Repo repo = InMemoryRepoImp.getInstance();
     private EditText editTitle;
     private EditText editDescription;
+    public static final String CHANNEL_NOTIFICATION_ID_NEW_NOTE = "CHANNEL_NOTIFICATION_ID_NEW_NOTE";
+    public static final int NOTIFICATION_NEW_NOTE_ID = 444;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,8 +57,10 @@ public class AddNoteFragment extends Fragment {
     void saveNote()
     {
         Note editNote = new Note(editTitle.getText().toString(), editDescription.getText().toString());
-        if(!(editTitle.getText().toString().equals("") && editDescription.getText().toString().equals("")))
+        if(!(editTitle.getText().toString().equals("") && editDescription.getText().toString().equals(""))) {
             repo.create(editNote);
+            showNotificationNewNote();
+        }
     }
 
     //скрываем элементы тулбара активити и добавляем элементы меню фрагмента заметки
@@ -83,5 +93,27 @@ public class AddNoteFragment extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showNotificationNewNote(){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireActivity(), CHANNEL_NOTIFICATION_ID_NEW_NOTE);
+
+        //реализация запуска приложения из строки уведомления
+        Intent notesListActivityIntent = new Intent(requireActivity(), NotesListActivity.class);
+        
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+          requireActivity(), PENDING_REQUEST_ID, notesListActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT      
+        );
+
+        //
+
+        builder
+                .setContentTitle(editTitle.getText().toString())
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setContentText(editDescription.getText().toString());
+
+        NotificationManagerCompat.from(requireActivity()).notify(NOTIFICATION_NEW_NOTE_ID, builder.build());
     }
 }

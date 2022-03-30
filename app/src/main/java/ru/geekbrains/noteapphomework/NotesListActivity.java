@@ -1,6 +1,9 @@
 package ru.geekbrains.noteapphomework;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,11 +11,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
@@ -21,13 +27,20 @@ import com.google.android.material.navigation.NavigationView;
 import ru.geekbrains.noteapphomework.data.Controller;
 import ru.geekbrains.noteapphomework.data.Note;
 import ru.geekbrains.noteapphomework.data.QuitDialogListener;
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 public class NotesListActivity extends AppCompatActivity implements Controller, QuitDialogListener {
 
     private FragmentManager manager;
-    public static final String EDIT_NOTE_LANDSCAPE = "EDIT_NOTE_LANDSCAPE";
+    public static final String EDIT_NOTE = "EDIT_NOTE";
     public static final String LIST_FRAGMENT = "LIST_FRAGMENT";
     public static final String LIST_NAVIGATION_ABOUT = "LIST_NAVIGATION_ABOUT";
+    public static final String ADD_NOTE = "ADD_NOTE";
+    public static final String CHANNEL_NOTIFICATION_ID_NEW_NOTE = "CHANNEL_NOTIFICATION_ID_NEW_NOTE";
+    private int orientation = ORIENTATION_PORTRAIT;
+    private EditNoteFragment editNoteFragment;
+    private AddNoteFragment addNoteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,33 +48,63 @@ public class NotesListActivity extends AppCompatActivity implements Controller, 
         setContentView(R.layout.activity_notes_list);
         initToolbarAndDrawer();
 
-        manager = getSupportFragmentManager();
-        if(savedInstanceState == null)
-                manager
-                        .beginTransaction()
-                        .replace(R.id.fragment_notes_list_container, new NotesListFragment(), LIST_FRAGMENT)
-                        .commit();
+        orientation = getResources().getConfiguration().orientation;
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT &&
+        manager = getSupportFragmentManager();
+
+        editNoteFragment = (EditNoteFragment) manager.findFragmentByTag(EDIT_NOTE);
+        addNoteFragment = (AddNoteFragment) manager.findFragmentByTag(ADD_NOTE);
+
+        if(savedInstanceState == null) {
+            manager
+                    .beginTransaction()
+                    .replace(R.id.fragment_notes_list_container, new NotesListFragment(), LIST_FRAGMENT)
+                    .commit();
+        }
+
+        if(editNoteFragment != null){
+            manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            manager.beginTransaction().remove(editNoteFragment).commit();
+            manager.executePendingTransactions();
+            manager.beginTransaction().replace(
+                    orientation == ORIENTATION_PORTRAIT ? R.id.fragment_notes_list_container : R.id.right_landscape_container,
+                    editNoteFragment, EDIT_NOTE)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
+        if(addNoteFragment != null){
+            manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            manager.beginTransaction().remove(addNoteFragment).commit();
+            manager.executePendingTransactions();
+            manager.beginTransaction().replace(
+                    orientation == ORIENTATION_PORTRAIT ? R.id.fragment_notes_list_container : R.id.right_landscape_container,
+                    addNoteFragment, ADD_NOTE)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
+        if(orientation == ORIENTATION_PORTRAIT &&
                 manager.getBackStackEntryCount() > 1) {
             manager.popBackStack();
         }
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            createNotificationChannels();
+        }
+
     }
 
     @Override
     public void openEditNoteFragment(Note note) {
             manager
                     .beginTransaction()
-                    .replace(R.id.fragment_notes_list_container, EditNoteFragment.getInstance(note))
+                    .replace(
+                            orientation == ORIENTATION_PORTRAIT ? R.id.fragment_notes_list_container : R.id.right_landscape_container,
+                            EditNoteFragment.getInstance(note), EDIT_NOTE)
                     .addToBackStack(null)
-                    .commit();}
-
-    @Override
-    public void openEditNoteFragmentLandscape(Note note) {
-        manager
-                .beginTransaction()
-                .replace(R.id.right_landscape_container, EditNoteFragment.getInstance(note), EDIT_NOTE_LANDSCAPE)
-                .commit();
+                    .commit();
     }
 
     @Override
@@ -70,11 +113,11 @@ public class NotesListActivity extends AppCompatActivity implements Controller, 
         if(manager.findFragmentByTag(LIST_FRAGMENT) != null)
             ((NotesListFragment)manager.findFragmentByTag(LIST_FRAGMENT)).refresh();
 
-        if (getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_LANDSCAPE && manager.findFragmentByTag(EDIT_NOTE_LANDSCAPE) != null)
+        if (orientation ==
+                ORIENTATION_LANDSCAPE && manager.findFragmentByTag(EDIT_NOTE) != null)
         manager
                 .beginTransaction()
-                .remove(manager.findFragmentByTag(EDIT_NOTE_LANDSCAPE))
+                .remove(manager.findFragmentByTag(EDIT_NOTE))
                 .commit();
     }
 
@@ -105,7 +148,9 @@ public class NotesListActivity extends AppCompatActivity implements Controller, 
             case R.id.add_notes:
                 manager
                         .beginTransaction()
-                        .replace(R.id.fragment_notes_list_container, new AddNoteFragment())
+                        .replace(
+                                orientation == ORIENTATION_PORTRAIT ? R.id.fragment_notes_list_container : R.id.right_landscape_container,
+                                new AddNoteFragment(), ADD_NOTE)
                         .addToBackStack(null)
                         .commit();
             return true;
@@ -169,5 +214,19 @@ public class NotesListActivity extends AppCompatActivity implements Controller, 
     @Override
     public void quitDialogYes() {
         finish();
+    }
+
+
+    //Создание NotificationChannel для реализации уведомлений
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void createNotificationChannels(){
+        String channelName = getString(R.string.channel_notification_name);
+        String channelDescription = getString(R.string.channel_notification_description);
+        int channelImportance = NotificationManager.IMPORTANCE_DEFAULT;
+
+        NotificationChannel channel = new NotificationChannel(CHANNEL_NOTIFICATION_ID_NEW_NOTE, channelName, channelImportance);
+        channel.setDescription(channelDescription);
+
+        NotificationManagerCompat.from(this).createNotificationChannel(channel);
     }
 }

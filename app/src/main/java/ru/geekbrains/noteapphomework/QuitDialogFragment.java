@@ -1,5 +1,7 @@
 package ru.geekbrains.noteapphomework;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,16 +21,14 @@ import ru.geekbrains.noteapphomework.data.QuitDialogListener;
 public class QuitDialogFragment extends DialogFragment {
 
     public static final String QUIT_DIALOG_FRAGMENT_TAG = "QUIT_DIALOG_FRAGMENT_TAG";
-    private TextView quitTextView;
     private MaterialButton quitButtonYes;
     private MaterialButton quitButtonNo;
-    private QuitDialogListener quitDialogListener;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View quitDialogFragmentView = inflater.inflate(R.layout.fragment_quit_dialog, null);
-
         return quitDialogFragmentView;
     }
 
