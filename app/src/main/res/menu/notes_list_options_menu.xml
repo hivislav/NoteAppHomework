@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sort_notes"
+        android:title="@string/notes_list_option_menu_sort"
+        android:icon="@drawable/ic_baseline_sort_by_alpha_24"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="1">
+    </item>
+
+    <item
+        android:id="@+id/search_notes"
+        android:title="@string/notes_list_option_menu_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="2">
+    </item>
+
+    <item
+        android:id="@+id/add_notes"
+        android:title="@string/notes_list_option_menu_add"
+        android:icon="@drawable/ic_baseline_note_add_24"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="3">
+    </item>
+
+</menu>

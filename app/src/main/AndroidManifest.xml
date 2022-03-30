@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoteAppHomework">
         <activity
+            android:name=".AddNoteFragment"
+            android:exported="false" />
+        <activity
             android:name=".NotesListActivity"
             android:exported="true">
             <intent-filter>

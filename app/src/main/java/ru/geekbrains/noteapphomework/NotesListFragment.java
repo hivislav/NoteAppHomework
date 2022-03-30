@@ -4,6 +4,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -65,4 +67,5 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
         if(adapter != null)
             adapter.notifyDataSetChanged();
     }
+
 }
