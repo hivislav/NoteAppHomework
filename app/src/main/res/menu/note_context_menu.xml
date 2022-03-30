@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/context_menu_change_note"
+        android:orderInCategory="1"
+        android:title="@string/context_menu_change_note"/>
+    <item
+        android:id="@+id/context_menu_delete_note"
+        android:orderInCategory="2"
+        android:title="@string/context_menu_delete_note"/>
+    <item
+        android:id="@+id/context_menu_share_note"
+        android:orderInCategory="3"
+        android:title="@string/context_menu_share_note"/>
+</menu>

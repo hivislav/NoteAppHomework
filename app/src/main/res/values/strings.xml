@@ -29,5 +29,8 @@
     <string name="quit_button_no">Нет</string>
     <string name="channel_notification_name">New note name</string>
     <string name="channel_notification_description">New note description</string>
+    <string name="context_menu_change_note">Изменить</string>
+    <string name="context_menu_delete_note">Удалить</string>
+    <string name="context_menu_share_note">Поделиться</string>
 
 </resources>
