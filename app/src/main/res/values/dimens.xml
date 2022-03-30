@@ -15,6 +15,9 @@
     <dimen name="navigation_header_padding_bottom">12dp</dimen>
     <dimen name="navigation_textview_username_padding_top">5dp</dimen>
     <dimen name="about_padding">50dp</dimen>
+    <dimen name="quit_fragment_layout_padding">25dp</dimen>
+    <dimen name="quit_fragment_inside_layout_padding">15dp</dimen>
+    <dimen name="dialog_fragment_text_size">16sp</dimen>
 
 
 </resources>
