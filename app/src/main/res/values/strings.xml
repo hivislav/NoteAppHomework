@@ -32,5 +32,7 @@
     <string name="context_menu_change_note">Изменить</string>
     <string name="context_menu_delete_note">Удалить</string>
     <string name="context_menu_share_note">Поделиться</string>
+    <string name="button_cancel">Отмена</string>
+    <string name="default_date">default</string>
 
 </resources>

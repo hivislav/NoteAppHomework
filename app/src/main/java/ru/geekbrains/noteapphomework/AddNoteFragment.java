@@ -13,24 +13,39 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import ru.geekbrains.noteapphomework.data.Controller;
+import ru.geekbrains.noteapphomework.data.DatePickerListener;
 import ru.geekbrains.noteapphomework.data.InMemoryRepoImp;
 import ru.geekbrains.noteapphomework.data.Note;
+import ru.geekbrains.noteapphomework.data.QuitDialogListener;
 import ru.geekbrains.noteapphomework.data.Repo;
 
-public class AddNoteFragment extends Fragment {
+public class AddNoteFragment extends Fragment{
 
     private static final int PENDING_REQUEST_ID = 416;
     private Repo repo = InMemoryRepoImp.getInstance();
     private EditText editTitle;
     private EditText editDescription;
+    private TextView dateTextView;
+    private String date;
+    String saveInstanceDate;
     public static final String CHANNEL_NOTIFICATION_ID_NEW_NOTE = "CHANNEL_NOTIFICATION_ID_NEW_NOTE";
     public static final int NOTIFICATION_NEW_NOTE_ID = 444;
+    public static final String DATE = "DATE";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +58,19 @@ public class AddNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         editTitle = view.findViewById(R.id.set_title);
         editDescription = view.findViewById(R.id.set_description);
+        dateTextView = view.findViewById(R.id.set_date);
+
+        if (savedInstanceState == null) {
+            Date currentDate = new Date();
+            // Форматирование времени как "день.месяц.год"
+            DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            date = dateFormat.format(currentDate);
+            dateTextView.setText(date);
+        } else {
+            saveInstanceDate = savedInstanceState.getString(DATE);
+            dateTextView.setText(saveInstanceDate);
+        }
+
 
         Button buttonOk = view.findViewById(R.id.button_ok);
         buttonOk.setOnClickListener(new View.OnClickListener() {
@@ -52,11 +80,18 @@ public class AddNoteFragment extends Fragment {
                 ((Controller) requireActivity()).pressedOkButtonEditNote();
             }
         });
+
+        dateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((DatePickerListener) requireActivity()).callDatePicker();
+            }
+        });
     }
 
     void saveNote()
     {
-        Note editNote = new Note(editTitle.getText().toString(), editDescription.getText().toString());
+        Note editNote = new Note(editTitle.getText().toString(), editDescription.getText().toString(), dateTextView.getText().toString());
         if(!(editTitle.getText().toString().equals("") && editDescription.getText().toString().equals(""))) {
             repo.create(editNote);
             showNotificationNewNote();
@@ -116,4 +151,16 @@ public class AddNoteFragment extends Fragment {
 
         NotificationManagerCompat.from(requireActivity()).notify(NOTIFICATION_NEW_NOTE_ID, builder.build());
     }
+
+    void setDate(String date){
+        saveInstanceDate = date;
+        dateTextView.setText(saveInstanceDate);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(DATE, saveInstanceDate);
+    }
+
 }

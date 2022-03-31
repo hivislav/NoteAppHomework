@@ -13,9 +13,9 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
     private TextView title;
     private TextView description;
+    private TextView date;
     private Note note;
     private NotesListFragment notesListFragment;
-    public int noteHolderPosition;
 
 
 
@@ -23,7 +23,8 @@ public class NoteHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.notesListFragment = notesListFragment;
         title = itemView.findViewById(R.id.note_title);
-        description = itemView.findViewById(R.id.note_descripton);
+        description = itemView.findViewById(R.id.note_description);
+        date = itemView.findViewById(R.id.note_date);
         registerContextMenu(itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +47,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
         this.note = note;
         title.setText(note.getTitle());
         description.setText(note.getDescription());
+        date.setText(note.getDate());
     }
 
 

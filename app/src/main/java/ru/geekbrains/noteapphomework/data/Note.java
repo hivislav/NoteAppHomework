@@ -9,10 +9,12 @@ public class Note implements Serializable {
     private Integer id;
     private String title;
     private String description;
+    private String date;
 
-    public Note(String title, String description) {
+    public Note(String title, String description, String date) {
         this.title = title;
         this.description = description;
+        this.date = date;
     }
 
     public Integer getId() {
@@ -29,6 +31,14 @@ public class Note implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getDescription() {
