@@ -1,5 +1,7 @@
 package ru.geekbrains.noteapphomework;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +45,6 @@ public class AddNoteFragment extends Fragment{
     private EditText editDescription;
     private TextView dateTextView;
     private String date;
-    String saveInstanceDate;
     public static final String CHANNEL_NOTIFICATION_ID_NEW_NOTE = "CHANNEL_NOTIFICATION_ID_NEW_NOTE";
     public static final int NOTIFICATION_NEW_NOTE_ID = 444;
     public static final String DATE = "DATE";
@@ -67,8 +69,8 @@ public class AddNoteFragment extends Fragment{
             date = dateFormat.format(currentDate);
             dateTextView.setText(date);
         } else {
-            saveInstanceDate = savedInstanceState.getString(DATE);
-            dateTextView.setText(saveInstanceDate);
+            date = savedInstanceState.getString(DATE);
+            dateTextView.setText(date);
         }
 
 
@@ -153,14 +155,14 @@ public class AddNoteFragment extends Fragment{
     }
 
     void setDate(String date){
-        saveInstanceDate = date;
-        dateTextView.setText(saveInstanceDate);
+        this.date = date;
+        dateTextView.setText(date);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(DATE, saveInstanceDate);
+        outState.putString(DATE, date);
     }
 
 }

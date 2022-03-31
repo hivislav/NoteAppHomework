@@ -14,6 +14,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import ru.geekbrains.noteapphomework.data.Controller;
 import ru.geekbrains.noteapphomework.data.DatePickerListener;
 import ru.geekbrains.noteapphomework.data.InMemoryRepoImp;
@@ -30,7 +36,7 @@ public class EditNoteFragment extends Fragment {
     private TextView dateTextView;
     public static final String NOTE = "NOTE";
     public static final String DATE = "DATE";
-    String saveInstanceDate;
+    private String date;
 
     public static EditNoteFragment getInstance(Note note){
         // создать фрагмент
@@ -62,9 +68,11 @@ public class EditNoteFragment extends Fragment {
 
         init(note);
 
-        if (savedInstanceState != null) {
-            saveInstanceDate = savedInstanceState.getString(DATE);
-            dateTextView.setText(saveInstanceDate);
+        if (savedInstanceState == null) {
+            dateTextView.setText(date);
+        } else {
+            date = savedInstanceState.getString(DATE);
+            dateTextView.setText(date);
         }
 
         Button buttonOk = view.findViewById(R.id.button_ok);
@@ -101,6 +109,7 @@ public class EditNoteFragment extends Fragment {
         editTitle.setText(note.getTitle());
         editDescription.setText(note.getDescription());
         dateTextView.setText(note.getDate());
+        date = note.getDate();
         noteId = note.getId();
     }
 
@@ -135,14 +144,14 @@ public class EditNoteFragment extends Fragment {
     }
 
     void setDate(String date){
-        saveInstanceDate = date;
-        dateTextView.setText(saveInstanceDate);
+        this.date = date;
+        dateTextView.setText(date);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(DATE, saveInstanceDate);
+        outState.putString(DATE, date);
     }
 }
 
