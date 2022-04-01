@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <FrameLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/note_style"
+        android:padding="@dimen/padding_edit_note">
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/note_style"
-            android:padding="@dimen/padding_edit_note">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:textStyle="italic"
+                android:text="12.12.2022"
+                android:id="@+id/set_date">
+            </TextView>
 
             <EditText
                 style="@style/NoteEditTitle"
+                android:textStyle="bold"
                 android:id="@+id/set_title">
             </EditText>
 
@@ -31,7 +43,8 @@
                 android:id="@+id/button_ok">
             </com.google.android.material.button.MaterialButton>
 
-            </LinearLayout>
-        </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
 
-    </androidx.cardview.widget.CardView>
+</androidx.cardview.widget.CardView>
+

@@ -9,11 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import ru.geekbrains.noteapphomework.data.Controller;
+import ru.geekbrains.noteapphomework.data.DatePickerListener;
 import ru.geekbrains.noteapphomework.data.InMemoryRepoImp;
 import ru.geekbrains.noteapphomework.data.Note;
 import ru.geekbrains.noteapphomework.data.Repo;
@@ -25,7 +33,10 @@ public class EditNoteFragment extends Fragment {
     private Repo repo = InMemoryRepoImp.getInstance();
     private EditText editTitle;
     private EditText editDescription;
+    private TextView dateTextView;
     public static final String NOTE = "NOTE";
+    public static final String DATE = "DATE";
+    private String date;
 
     public static EditNoteFragment getInstance(Note note){
         // создать фрагмент
@@ -53,8 +64,16 @@ public class EditNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         editTitle = view.findViewById(R.id.set_title);
         editDescription = view.findViewById(R.id.set_description);
+        dateTextView = view.findViewById(R.id.set_date);
 
         init(note);
+
+        if (savedInstanceState == null) {
+            dateTextView.setText(date);
+        } else {
+            date = savedInstanceState.getString(DATE);
+            dateTextView.setText(date);
+        }
 
         Button buttonOk = view.findViewById(R.id.button_ok);
         buttonOk.setOnClickListener(new View.OnClickListener() {
@@ -64,13 +83,20 @@ public class EditNoteFragment extends Fragment {
                 ((Controller) requireActivity()).pressedOkButtonEditNote();
             }
         });
+        dateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((DatePickerListener) requireActivity()).callDatePicker();
+            }
+        });
+
     }
 
     //возвращение отредактированной заметки в NotesListFragment (через перезапись в репо)
 
      void saveNote()
     {
-        Note editNote = new Note(editTitle.getText().toString(), editDescription.getText().toString());
+        Note editNote = new Note(editTitle.getText().toString(), editDescription.getText().toString(), dateTextView.getText().toString());
         editNote.setId(noteId);
         repo.update(editNote);
     }
@@ -82,6 +108,8 @@ public class EditNoteFragment extends Fragment {
         note = (Note) args.getSerializable(NOTE);
         editTitle.setText(note.getTitle());
         editDescription.setText(note.getDescription());
+        dateTextView.setText(note.getDate());
+        date = note.getDate();
         noteId = note.getId();
     }
 
@@ -113,6 +141,17 @@ public class EditNoteFragment extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void setDate(String date){
+        this.date = date;
+        dateTextView.setText(date);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(DATE, date);
     }
 }
 

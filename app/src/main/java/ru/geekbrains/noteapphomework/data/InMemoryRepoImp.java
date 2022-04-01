@@ -3,6 +3,8 @@ package ru.geekbrains.noteapphomework.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.geekbrains.noteapphomework.R;
+
 public class InMemoryRepoImp implements Repo {
 
     private static InMemoryRepoImp repo;
@@ -13,21 +15,21 @@ public class InMemoryRepoImp implements Repo {
 
     private void init()
     {
-        create(new Note("Title 1", "Description 1"));
-        create(new Note("Title 2", "Description 2"));
-        create(new Note("Title 3", "Description 3"));
-        create(new Note("Title 4", "Description 4"));
-        create(new Note("Title 5", "Description 5"));
-        create(new Note("Title 6", "Description 6"));
-        create(new Note("Title 7", "Description 7"));
-        create(new Note("Title 8", "Description 8"));
-        create(new Note("Title 9", "Description 9"));
-        create(new Note("Title 10", "Description 10"));
-        create(new Note("Title 11", "Description 11"));
-        create(new Note("Title 12", "Description 12"));
-        create(new Note("Title 13", "Description 13"));
-        create(new Note("Title 14", "Description 14"));
-        create(new Note("Title 15", "Description 15"));
+        create(new Note("Title 1", "Description 1", "default"));
+        create(new Note("Title 2", "Description 2", "default"));
+        create(new Note("Title 3", "Description 3", "default"));
+        create(new Note("Title 4", "Description 4", "default"));
+        create(new Note("Title 5", "Description 5", "default"));
+        create(new Note("Title 6", "Description 6", "default"));
+        create(new Note("Title 7", "Description 7", "default"));
+        create(new Note("Title 8", "Description 8", "default"));
+        create(new Note("Title 9", "Description 9", "default"));
+        create(new Note("Title 10", "Description 10", "default"));
+        create(new Note("Title 11", "Description 11", "default"));
+        create(new Note("Title 12", "Description 12", "default"));
+        create(new Note("Title 13", "Description 13", "default"));
+        create(new Note("Title 14", "Description 14", "default"));
+        create(new Note("Title 15", "Description 15", "default"));
     }
 
     public static InMemoryRepoImp getInstance(){
