@@ -50,8 +50,7 @@ public class AddNoteFragment extends Fragment{
     public static final String DATE = "DATE";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_add_note, container, false);
     }
