@@ -1,5 +1,12 @@
 package ru.geekbrains.noteapphomework.data;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,28 +15,18 @@ import ru.geekbrains.noteapphomework.R;
 public class InMemoryRepoImp implements Repo {
 
     private static InMemoryRepoImp repo;
+    private List<Note> notes = new ArrayList<>();
+    private int counter = 0;
+    private SharedPreferences preferences;
+    public static final String NOTES_KEY = "NOTES_KEY";
+    private Gson gson = new Gson();
+
+
+
     private InMemoryRepoImp()
     {
-        init();
-    }
-
-    private void init()
-    {
-        create(new Note("Title 1", "Description 1", "default"));
-        create(new Note("Title 2", "Description 2", "default"));
-        create(new Note("Title 3", "Description 3", "default"));
-        create(new Note("Title 4", "Description 4", "default"));
-        create(new Note("Title 5", "Description 5", "default"));
-        create(new Note("Title 6", "Description 6", "default"));
-        create(new Note("Title 7", "Description 7", "default"));
-        create(new Note("Title 8", "Description 8", "default"));
-        create(new Note("Title 9", "Description 9", "default"));
-        create(new Note("Title 10", "Description 10", "default"));
-        create(new Note("Title 11", "Description 11", "default"));
-        create(new Note("Title 12", "Description 12", "default"));
-        create(new Note("Title 13", "Description 13", "default"));
-        create(new Note("Title 14", "Description 14", "default"));
-        create(new Note("Title 15", "Description 15", "default"));
+        preferences = PreferenceManager.getDefaultSharedPreferences(PreferencesApplication.getInstance());
+        notes = getAll();
     }
 
     public static InMemoryRepoImp getInstance(){
@@ -40,15 +37,16 @@ public class InMemoryRepoImp implements Repo {
         return repo;
     }
 
-    private ArrayList<Note> notes = new ArrayList<>();
-    private int counter = 0;
-
-
     @Override
     public int create(Note note) {
         int id = counter++;
         note.setId(id);
         notes.add(note);
+        String data = gson.toJson(notes);
+        preferences
+                .edit()
+                .putString(NOTES_KEY,data)
+                .apply();
         return id;
     }
 
@@ -66,6 +64,11 @@ public class InMemoryRepoImp implements Repo {
         for (int i = 0; i < notes.size(); i++) {
             if (notes.get(i).getId() == note.getId()) {
                 notes.set(i, note);
+                String data = gson.toJson(notes);
+                preferences
+                        .edit()
+                        .putString(NOTES_KEY,data)
+                        .apply();
                 break;
             }
         }
@@ -76,6 +79,10 @@ public class InMemoryRepoImp implements Repo {
         for (int i = 0; i < notes.size(); i++) {
             if (notes.get(i).getId() == id) {
                 notes.remove(i);
+                preferences
+                        .edit()
+                        .remove(NOTES_KEY)
+                        .apply();
                 break;
             }
         }
@@ -83,6 +90,18 @@ public class InMemoryRepoImp implements Repo {
 
     @Override
     public List<Note> getAll() {
+        String data = preferences.getString(NOTES_KEY, "{}");
+        try {
+            //строку превращаем в список заметок при десериализации
+            notes = gson.fromJson(
+                    data, new TypeToken<List<Note>>(){}.getType());
+        }
+        catch (Exception e){
+            Log.d("happy", "Exception: " + e.getMessage());
+        }
+        if (notes == null)
+            notes = new ArrayList<>();
+
         return notes;
     }
 }
